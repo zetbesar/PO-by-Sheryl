@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pre-Order Eksklusif</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fce4ec; /* Warna pink pastel ala butik */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            max-width: 450px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .header h1 {
+            font-size: 22px;
+            color: #d81b60;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin: 0;
+        }
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            display: block;
+            margin-top: 15px;
+            color: #2c3e50;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            box-sizing: border-box;
+            background-color: #fafafa;
+        }
+        textarea {
+            resize: none;
+            height: 80px;
+        }
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 30px;
+            background-color: #d81b60;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #ad1457;
+        }
+        .loading {
+            opacity: 0.7;
+            cursor: not-allowed !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>✨ Pre-Order Batch 2 ✨</h1>
+            <p>Isi data di bawah ini, admin akan rekap otomatis!</p>
+        </div>
+
+        <form name="submit-to-google-sheet">
+            <label>Nama Lengkap</label>
+            <input type="text" name="nama" placeholder="Contoh: Zahra Maharani" required>
+
+            <label>Nomor WhatsApp</label>
+            <input type="number" name="wa" placeholder="Contoh: 08123456789" required>
+
+            <label>Pilihan Produk</label>
+            <select name="produk" required>
+                <option value="" disabled selected>-- Pilih Produk --</option>
+                <option value="Pendant Only (Rp 299.000)">Pendant Only (Rp 299.000)</option>
+                <option value="Bundling Pendant + Cincin (Rp 399.000)">Bundling Slay: Pendant + Cincin (Rp 399.000)</option>
+            </select>
+
+            <label>Alamat Pengiriman Lengkap</label>
+            <textarea name="alamat" placeholder="Nama Jalan, RT/RW, Kecamatan, Kota, Kode Pos" required></textarea>
+
+            <button type="submit" id="btnSubmit">Kirim Pesanan Sekarang</button>
+        </form>
+    </div>
+
+    <script>
+        // BOS ZET, PASTE LINK WEB APP DARI GOOGLE SCRIPT DI ANTARA TANDA KUTIP DI BAWAH INI:
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzH0JM3xBqBqNTbX0uC5VEOnfYj_JCaYq_VoMq1gceAqABlITMwQ466zz0LXn3PDtvEXg/exec';
+        
+        const form = document.forms['submit-to-google-sheet'];
+        const btnSubmit = document.getElementById('btnSubmit');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // Ubah tombol jadi loading biar user gak ngeklik 2x
+            btnSubmit.innerHTML = 'Memproses... ⏳';
+            btnSubmit.classList.add('loading');
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    alert('Yey! Pesanan berhasil masuk ke sistem Sheryl. Admin akan segera menghubungi WA kamu.');
+                    form.reset();
+                    btnSubmit.innerHTML = 'Kirim Pesanan Sekarang';
+                    btnSubmit.classList.remove('loading');
+                })
+                .catch(error => {
+                    alert('Waduh, ada yang error nih. Coba lagi ya!');
+                    btnSubmit.innerHTML = 'Kirim Pesanan Sekarang';
+                    btnSubmit.classList.remove('loading');
+                });
+        });
+    </script>
+</body>
+</html>
