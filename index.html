@@ -3,84 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Form Pre-Order Eksklusif</title>
+    <title>Pre-Order Sheryl Boutique</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
         
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fce4ec; /* Warna pink pastel ala butik */
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #f5efe6; /* Warna earth tone lembut */
+            padding: 20px; 
+            display: flex; 
+            justify-content: center; 
         }
-        .container {
-            background: white;
-            max-width: 450px;
-            width: 100%;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        .container { 
+            background: #ffffff; 
+            max-width: 450px; 
+            width: 100%; 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05); 
             box-sizing: border-box;
+            border: 1px solid #e4dccc;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 25px;
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h1 { font-size: 22px; color: #5d4037; margin: 0; } /* Brown elegan */
+        .header p { font-size: 13px; color: #8d6e63; }
+        
+        label { font-size: 13px; font-weight: 600; display: block; margin-top: 15px; color: #4e342e; }
+        
+        input, select, textarea { 
+            width: 100%; padding: 12px; margin-top: 8px; 
+            border: 1px solid #d7ccc8; border-radius: 10px; 
+            font-family: 'Poppins', sans-serif; font-size: 14px; 
+            box-sizing: border-box; background-color: #faf9f6; 
         }
-        .header h1 {
-            font-size: 22px;
-            color: #d81b60;
-            margin-bottom: 5px;
+        
+        .detail-text { font-size: 11px; color: #795548; margin-top: 5px; font-style: italic; }
+        
+        button { 
+            width: 100%; padding: 15px; margin-top: 30px; 
+            background-color: #5d4037; /* Brown tua untuk tombol */
+            color: white; border: none; border-radius: 10px; 
+            font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; 
         }
-        .header p {
-            font-size: 13px;
-            color: #7f8c8d;
-            margin: 0;
-        }
-        label {
-            font-size: 13px;
-            font-weight: 600;
-            display: block;
-            margin-top: 15px;
-            color: #2c3e50;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            box-sizing: border-box;
-            background-color: #fafafa;
-        }
-        textarea {
-            resize: none;
-            height: 80px;
-        }
-        button {
-            width: 100%;
-            padding: 15px;
-            margin-top: 30px;
-            background-color: #d81b60;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover {
-            background-color: #ad1457;
-        }
-        .loading {
-            opacity: 0.7;
-            cursor: not-allowed !important;
-        }
+        button:hover { background-color: #3e2723; }
     </style>
 </head>
 <body>
@@ -88,55 +53,98 @@
     <div class="container">
         <div class="header">
             <h1>✨ Pre-Order Batch 2 ✨</h1>
-            <p>Isi data di bawah ini, admin akan rekap otomatis!</p>
+            <p>Silakan isi data pesanan kamu ya!</p>
         </div>
 
         <form name="submit-to-google-sheet">
             <label>Nama Lengkap</label>
-            <input type="text" name="nama" placeholder="Contoh: Zahra Maharani" required>
+            <input type="text" name="nama" placeholder="Contoh: SHXO" required>
 
             <label>Nomor WhatsApp</label>
             <input type="number" name="wa" placeholder="Contoh: 08123456789" required>
 
             <label>Pilihan Produk</label>
-            <select name="produk" required>
-                <option value="" disabled selected>-- Pilih Produk --</option>
-                <option value="Pendant Only (Rp 299.000)">Pendant Only (Rp 299.000)</option>
-                <option value="Bundling Pendant + Cincin (Rp 399.000)">Bundling Slay: Pendant + Cincin (Rp 399.000)</option>
+            <select name="produk" id="produk" onchange="toggleWarna()" required>
+                <option value="Single Necklace (219K)">Single Necklace - 219K</option>
+                <option value="Bundling Necklace (399K)">Bundling Necklace - 399K</option>
             </select>
+            <div class="detail-text">
+                <b>Single:</b> Necklace, 1 Tato XO, 2 Stiker, Pouch, Packaging.<br>
+                <b>Bundling:</b> 2 Necklace, 2 Tato XO, 6 Stiker, Pouch, Packaging.
+            </div>
 
-            <label>Alamat Pengiriman Lengkap</label>
-            <textarea name="alamat" placeholder="Nama Jalan, RT/RW, Kecamatan, Kota, Kode Pos" required></textarea>
+            <div id="pilihanSingle">
+                <label>Warna Necklace</label>
+                <select name="warnaSingle">
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                </select>
+            </div>
+
+            <div id="pilihanBundling" style="display:none;">
+                <label>Warna Necklace 1</label>
+                <select name="warna1">
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                </select>
+                <label>Warna Necklace 2</label>
+                <select name="warna2">
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                </select>
+            </div>
+
+            <label>Alamat Jalan/Detail (Patokan)</label>
+            <input type="text" name="alamatDetail" placeholder="Contoh: Jl. ABC No. 123" required>
+            <div class="detail-text" style="margin-bottom: 10px;">
+                *Isikan alamat lengkap agar admin mudah cek ongkir ke tempatmu ya!
+            </div>
+
+            <label>Kota / Kabupaten</label>
+            <input type="text" name="kota" placeholder="Contoh: Bandung" required>
+
+            <label>Kecamatan</label>
+            <input type="text" name="kecamatan" placeholder="Contoh: Cicendo" required>
+
+            <label>Kelurahan</label>
+            <input type="text" name="kelurahan" placeholder="Contoh: Pasirkaliki" required>
+
+            <label>Kode Pos</label>
+            <input type="number" name="kodepos" placeholder="Contoh: 40171" required>
 
             <button type="submit" id="btnSubmit">Kirim Pesanan Sekarang</button>
         </form>
     </div>
 
     <script>
-        // BOS ZET, PASTE LINK WEB APP DARI GOOGLE SCRIPT DI ANTARA TANDA KUTIP DI BAWAH INI:
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzH0JM3xBqBqNTbX0uC5VEOnfYj_JCaYq_VoMq1gceAqABlITMwQ466zz0LXn3PDtvEXg/exec';
-        
+        const scriptURL = 'https://script.google.com/macros/s/AKfycby_u2ojp_RvFYeH5zSOqifFig5EUdTK4g3-gBIAHWwYrLe5B3_y3B3h15jpYJv1xWRATA/exec';
         const form = document.forms['submit-to-google-sheet'];
         const btnSubmit = document.getElementById('btnSubmit');
 
+        function toggleWarna() {
+            var produk = document.getElementById("produk").value;
+            if (produk === "Bundling Necklace (399K)") {
+                document.getElementById("pilihanBundling").style.display = "block";
+                document.getElementById("pilihanSingle").style.display = "none";
+            } else {
+                document.getElementById("pilihanBundling").style.display = "none";
+                document.getElementById("pilihanSingle").style.display = "block";
+            }
+        }
+
         form.addEventListener('submit', e => {
             e.preventDefault();
-            
-            // Ubah tombol jadi loading biar user gak ngeklik 2x
             btnSubmit.innerHTML = 'Memproses... ⏳';
-            btnSubmit.classList.add('loading');
-
             fetch(scriptURL, { method: 'POST', body: new FormData(form)})
                 .then(response => {
-                    alert('Yey! Pesanan berhasil masuk ke sistem Sheryl. Admin akan segera menghubungi WA kamu.');
+                    alert('Yey! Pesanan berhasil. Admin akan segera menghubungi WA kamu.');
                     form.reset();
                     btnSubmit.innerHTML = 'Kirim Pesanan Sekarang';
-                    btnSubmit.classList.remove('loading');
+                    toggleWarna();
                 })
                 .catch(error => {
-                    alert('Waduh, ada yang error nih. Coba lagi ya!');
+                    alert('Waduh, error. Coba lagi ya!');
                     btnSubmit.innerHTML = 'Kirim Pesanan Sekarang';
-                    btnSubmit.classList.remove('loading');
                 });
         });
     </script>
